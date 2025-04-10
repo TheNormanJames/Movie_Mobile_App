@@ -3,7 +3,6 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { images } from '@/constants/images';
 import { icons } from '@/constants/icons';
-import profile from './profile';
 
 const TabIcon = ({ focused, icon, title }: any) => {
   if (focused) {
