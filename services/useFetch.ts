@@ -1,9 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const useFetch = async <T>(
-  fetchFunction: () => Promise<T>,
-  autoFetch = true
-) => {
+const useFetch = <T>(fetchFunction: () => Promise<T>, autoFetch = true) => {
   const [loading, setLoading] = useState(autoFetch);
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -14,6 +11,7 @@ const useFetch = async <T>(
       setError(null);
 
       const result = await fetchFunction();
+
       setData(result);
     } catch (error) {
       setError(error instanceof Error ? error : new Error('Unknown error'));
@@ -33,3 +31,5 @@ const useFetch = async <T>(
   }, []);
   return { data, loading, error, refetch: fetchData, reset };
 };
+
+export default useFetch;
