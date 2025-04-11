@@ -13,6 +13,7 @@ import { fetchMovies } from '@/services/api';
 import useFetch from '@/services/useFetch';
 import { icons } from '@/constants/icons';
 import SearchBar from '@/components/SearchBar';
+import { updateSearchCount } from '@/services/appwrite';
 
 const search = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,6 +26,7 @@ const search = () => {
     reset,
   } = useFetch(() => fetchMovies({ query: searchQuery }));
 
+  // Debounced search effect
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
       if (searchQuery.trim()) {
@@ -32,9 +34,17 @@ const search = () => {
       } else {
         reset();
       }
-    }, 500); // Debounce for 500ms
-    return () => clearTimeout(timeoutId); // Cleanup the timeout on unmount or when searchQuery changes
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (movies?.length > 0 && movies?.[0]) {
+      updateSearchCount(searchQuery, movies[0]);
+      console.log('asdfasdf');
+    }
+  }, [movies]);
 
   return (
     <View className="flex-1 bg-primary">
